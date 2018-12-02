@@ -3,22 +3,22 @@
 Projektovanje baze za MATF Elektronski časopis
 ## Opis problema
 
-Za **Korisnika** se prati (...). Korisnik _Upravlja_ svojim sopstvenim podešavanjima - može upravljati samo svojim podacima, ali i ne mora. Način komunikacije između dva korisnika se ostvaruje tako što korisnik drugom korisniku _Šalje_ šablon za koji se prati id i tekst šablona - korisnik može slati više šablona, ali ne mora slati ni jedan. Šablon može biti poslat od strane više korisnika, ali ne mora ni jedan.
+Za **Korisnika** se prati id, ime, prezime, email, sifra, telefon, adresa, postanski broj, vreme poslednjeg logina. Korisnik _Upravlja_ svojim sopstvenim podešavanjima - može upravljati samo svojim podacima, ali i ne mora. Način komunikacije između dva korisnika se ostvaruje tako što korisnik drugom korisniku _Šalje_ šablon za koji se prati id i tekst šablona - korisnik može slati više šablona, ali ne mora slati ni jedan. Šablon može biti poslat od strane više korisnika, ali ne mora ni jedan.
 
 Korisnik _**Ima ulogu**_ u sistemu, i za tu **Ulogu** se prati id i naziv. Mora imati jednu ulogu, ali može i više, a ulogu mora imati bar jedan korisnik, ali može i više. Uloge mogu biti: glavni urednik, urednik, autor, recenzent, administrator. Prilikom priljavljivanja na sistem svi korisnici su autori (sem administratora), a glavni urednik (i samo on) im kasnije _Dodeljuje_ uloge, a on sam može dodeliti više uloga. Uloga _**Obezbeđuje**_ dodatne **Privilegije** korisnicima sistema, za koje se prati id i naziv. Uloga obezbeđuje barem jednu, a može i više privilegija, privilegije moraju biti dodeljene barem jednoj ulazi, ali mogu i više.
 
 Administrator može da _Menja podatke- ostalih korisnika, kao i da _Menja podešavanja_ samog časopisa. Podešavanja samo jednog časopisa menja samo administrator, koji jedini može menjati podatke ostalih korisnika i to više njih, ali ni ne mora.
 
-Autor _**Prijavljuje**_ **Rad**, za koji se prati (...). On može prijaviti više radova, a ne mora ni jedan, ali samo jedan autor može prijaviti rad. Samo onaj ko je prijavio rad može i da ga povuče, a onaj ko je prijavio radove može da povuče i više svojih radova, ali ne mora ni jedan.
+Autor _**Prijavljuje**_ **Rad**, za koji se prati id, naslov, link ka pdf verziji, status, da li je objavljen. On može prijaviti više radova, a ne mora ni jedan, ali samo jedan autor može prijaviti rad. Samo onaj ko je prijavio rad može i da ga povuče, a onaj ko je prijavio radove može da povuče i više svojih radova, ali ne mora ni jedan.
 
 Rad može imati jednu ili više **Verzija**, a sama verzija može biti verzija samo jednog rada.
 
 
-Recenzent _**Objavljuje**_ **Recenziju** za koju se prati (...) i za tu objavu se čuvaju vreme i datum. Recenzent može objaviti više recenzija, ali ne mora ni jednu, a recenziju mora objaviti barem jedan recenzent, ali može i više.
+Recenzent _**Objavljuje**_ **Recenziju** za koju se prati id, komentar, rad na koji je ostavljena, koji recenzent je objavio  i za tu objavu se čuvaju vreme i datum. Recenzent može objaviti više recenzija, ali ne mora ni jednu, a recenziju mora objaviti barem jedan recenzent, ali može i više.
 
 (Glavni) urednik može a ne mora da  _**Ostavlja komentar**_ na rad, i to na njih više, a rad može komentarisati i njih više, ali ne mora niko.
 
-Glavni urednik i samo on može da _Uređuje_ **Izdanje časopisa** za koje se prati (...), i to barem jedno, a može i njih više.
+Glavni urednik i samo on može da _Uređuje_ **Izdanje časopisa** za koje se prati issn broj, naslov, napomena, minimalan i maksimalan broj radova, i to barem jedno, a može i njih više.
 
 Izdanje časopisa može biti **Zimsko** i **Letnje**.
 
