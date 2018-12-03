@@ -3,26 +3,28 @@
 Projektovanje baze za MATF Elektronski časopis
 ## Opis problema
 
-Za **Korisnika** se prati id, ime, prezime, email, sifra, telefon, adresa, postanski broj, vreme poslednjeg logina. Korisnik _Upravlja_ svojim sopstvenim podešavanjima - može upravljati samo svojim podacima, ali i ne mora. Način komunikacije između dva korisnika se ostvaruje tako što korisnik drugom korisniku _Šalje_ šablon za koji se prati id i tekst šablona - korisnik može slati više šablona, ali ne mora slati ni jedan. Šablon može biti poslat od strane više korisnika, ali ne mora ni jedan.
+Za korisnika se prati id, ime, prezime, email, sifra, telefon, adresa, postanski broj, vreme poslednjeg logina. Korisnik može da upravlja svojim sopstvenim podacima.
 
-Korisnik _**Ima ulogu**_ u sistemu, i za tu **Ulogu** se prati id i naziv. Mora imati jednu ulogu, ali može i više, a ulogu mora imati bar jedan korisnik, ali može i više. Uloge mogu biti: glavni urednik, urednik, autor, recenzent, administrator. Prilikom priljavljivanja na sistem svi korisnici su autori (sem administratora), a glavni urednik (i samo on) im kasnije _Dodeljuje_ uloge, a on sam može dodeliti više uloga. Uloga _**Obezbeđuje**_ dodatne **Privilegije** korisnicima sistema, za koje se prati id i naziv. Uloga obezbeđuje barem jednu, a može i više privilegija, privilegije moraju biti dodeljene barem jednoj ulazi, ali mogu i više.
+Korisnik drugim korisnicima može slati šablone za koje se prati id i tekst šablona.
 
-Administrator može da _Menja podatke- ostalih korisnika, kao i da _Menja podešavanja_ samog časopisa. Podešavanja samo jednog časopisa menja samo administrator, koji jedini može menjati podatke ostalih korisnika i to više njih, ali ni ne mora.
+Korisnik ima barem jednu ulogu za koju se prati id i naziv, pri čemu za sve uloge mora postojati barem jedan korisnik koji je na njih raspoređen.Uloge mogu biti: glavni urednik, urednik, autor, recenzent, administrator. Prilikom priljavljivanja na sistem svi korisnici su autori (sem administratora), a glavni urednik (i samo on) im kasnije dodeljuje uloge. Uloga obezbeđuje dodatne prievilegije korisnicima sistema, za koje se prati id i naziv. Uloga korisniku obezbeđuje barem jednu privilegiju, a svaka od privilegija mora biti dodeljena barem jednom.
 
-Autor _**Prijavljuje**_ **Rad**, za koji se prati id, naslov, link ka pdf verziji, status, da li je objavljen. On može prijaviti više radova, a ne mora ni jedan, ali samo jedan autor može prijaviti rad. Samo onaj ko je prijavio rad može i da ga povuče, a onaj ko je prijavio radove može da povuče i više svojih radova, ali ne mora ni jedan.
+Administrator može da menja podatke ostalim korisnicima, i časopisu za koji se prati naziv, adresa, ISSN maska, web stranica.
 
-Rad može imati jednu ili više **Verzija**, a sama verzija može biti verzija samo jednog rada.
+Rad za koji se prati id, naslov, link ka pdf verziji, status, da li je objavljen piše više korisnika, ali može da ga prijavi samo jedan autor. Korisnik može imati ulogu autora, ali da nije još uvek prijavio, ni učestvovao u pisanju ni jednog rada. Rad može imati jednu ili više verzija, za koju se prati i njen id.
 
 
-Recenzent _**Objavljuje**_ **Recenziju** za koju se prati id, komentar, rad na koji je ostavljena, koji recenzent je objavio  i za tu objavu se čuvaju vreme i datum. Recenzent može objaviti više recenzija, ali ne mora ni jednu, a recenziju mora objaviti barem jedan recenzent, ali može i više.
+Recenzent može da objavljuje recenzije na verziju rada za koju se prati id, komentar i za tu objavu se čuvaju vreme i datum. Za verziju na rad ne mora da postoji ni jedna verzija, a može da postoji i više.
 
-(Glavni) urednik može a ne mora da  _**Ostavlja komentar**_ na rad, i to na njih više, a rad može komentarisati i njih više, ali ne mora niko.
+Glavni urednik, kao i ostali urednici mogu da ostavljaju komentare na radove, s tim što ostavljanje komentara na rad nije obavezno.
 
-Glavni urednik i samo on može da _Uređuje_ **Izdanje časopisa** za koje se prati issn broj, naslov, napomena, minimalan i maksimalan broj radova, i to barem jedno, a može i njih više.
+Glavni urednik i samo on uređuje izdanja časopisa za koje se prati issn broj, naslov, napomena, minimalan i maksimalan broj radova, kao i prihvaćeni radovi koji se u okviru tog izdanja objavljuju.
 
-Izdanje časopisa može biti **Zimsko** i **Letnje**.
+Časopis objavljuje dva izdanja u toku godine i jedno od njih je letnje.
 
-Letnje izdanje se prijavljuje _**Učestvuje**_ određenog datuma na **Konferenciji** za koju se prati id, naziv, datum početka, datum završetka. Letnje izdanje može da učestvuje na barem jednoj konferenciji i može i na više, a na samoj konferenciji može da učestvuje više letnjih izdanja, ali ne mora ni jedno. Konferencija se _**Održava**_ u **Sali** i to mora u bar jednoj, a može i u više, a u samoj sali se može održavati više konferencija, ali ne mora ni jedna.
+Radovi objavljeni u letnjem izdanju mogu da učestvuju na konferenciji za koju se prati id, naziv, datum početka, datum završetka. Na samoj konferenciji može da učestvuje više radova iz letnjih izdanja (ne nužno iz iste godine u kojoj se održava i konferencija), ali ne mora ni jedno. Konferencija se održava u barem jednoj sali, a u samoj sali može da se održava i više konferencija.
+
+Radove u sali određenog datuma u određeno vreme može da izlaže neki od njegovih autora.
 
 U sali radove određenog datuma u određeno vreme _**Izlaže**_ onaj koji je taj rad i prijavio i to on ne mora izlagati ni u jednoj sali, a može i u više, a u sali ne mora niko da izlaže, ali ako izlaže onda je to samo jedan autor.
 
