@@ -18,11 +18,9 @@ Recenzent može da objavljuje recenzije na verziju rada za koju se prati id, kom
 
 Glavni urednik, kao i ostali urednici mogu da ostavljaju komentare na radove, s tim što ostavljanje komentara na rad nije obavezno.
 
-Glavni urednik i samo on uređuje izdanja časopisa za koje se prati issn broj, naslov, napomena, minimalan i maksimalan broj radova, kao i prihvaćeni radovi koji se u okviru tog izdanja objavljuju.
+Glavni urednik i samo on uređuje izdanja časopisa za koje se prati issn broj, datum objave izdanja, naslov, napomena, minimalan i maksimalan broj radova, da li je letnje izdanje, kao i prihvaćeni radovi koji se u okviru tog izdanja objavljuju. Časopis objavljuje dva izdanja u toku godine i jedno od njih je letnje.
 
-Časopis objavljuje dva izdanja u toku godine i jedno od njih je letnje.
-
-Radovi objavljeni u letnjem izdanju mogu da učestvuju na konferenciji za koju se prati id, naziv, datum početka, datum završetka. Na samoj konferenciji može da učestvuje više radova iz letnjih izdanja (ne nužno iz iste godine u kojoj se održava i konferencija), ali ne mora ni jedno. Konferencija se održava u barem jednoj sali, a u samoj sali može da se održava i više konferencija.
+Radovi objavljeni u letnjem izdanju mogu da učestvuju na najviše jednoj konferenciji za koju se prati id, naziv, datum početka, datum završetka. Na samoj konferenciji može da učestvuje više radova iz letnjih izdanja (ne nužno iz iste godine u kojoj se održava i konferencija), ali ne mora ni jedno. Konferencija se održava u barem jednoj sali, a u samoj sali može da se održava i više konferencija.
 
 Radove u sali određenog datuma u određeno vreme može da izlaže neki od njegovih autora.
 
