@@ -7,11 +7,11 @@ Za korisnika se prati id, ime, prezime, email, sifra, telefon, adresa, postanski
 
 Korisnik drugim korisnicima može slati šablone za koje se prati id i tekst šablona.
 
-Korisnik ima barem jednu ulogu za koju se prati id i naziv, pri čemu za sve uloge mora postojati barem jedan korisnik koji je na njih raspoređen.Uloge mogu biti: glavni urednik, urednik, autor, recenzent, administrator. Prilikom priljavljivanja na sistem svi korisnici su autori (sem administratora), a glavni urednik (i samo on) im kasnije dodeljuje uloge. Uloga obezbeđuje dodatne prievilegije korisnicima sistema, za koje se prati id i naziv. Uloga korisniku obezbeđuje barem jednu privilegiju, a svaka od privilegija mora biti dodeljena barem jednom.
+Korisnik ima barem jednu ulogu za koju se prati id i naziv, pri čemu za sve uloge mora postojati barem jedan korisnik koji je na njih raspoređen.Uloge mogu biti: glavni urednik, urednik, autor, recenzent, administrator. Prilikom priljavljivanja na sistem svi korisnici su autori (sem administratora), a glavni urednik (i samo on) im kasnije dodeljuje uloge. Uloga obezbeđuje dodatne prievilegije korisnicima sistema, za koje se prati id i naziv. Uloga korisniku obezbeđuje barem jednu privilegiju, a svaka od privilegija mora biti dodeljena barem jednom Privilegije mogu biti: pisanje rada, prijavljivanje rada, menjanje podataka časopisu, menjanje podataka izdanju časopisa, dodeljivanje uloga korisnicima, ostavljanje komentara na rad, ostavljanje recenzije na rad, odobravanje rada, odbijanje rada.
 
 Administrator može da menja podatke ostalim korisnicima, i časopisu za koji se prati naziv, adresa, ISSN maska, web stranica.
 
-Rad za koji se prati id, naslov, link ka pdf verziji, status, da li je objavljen piše više korisnika, ali može da ga prijavi samo jedan autor. Korisnik može imati ulogu autora, ali da nije još uvek prijavio, ni učestvovao u pisanju ni jednog rada. Rad može imati jednu ili više verzija, za koju se prati i njen id.
+Rad za koji se prati id, naslov, link ka pdf verziji, status, da li je objavljen, piše više korisnika, ali može da ga prijavi samo jedan autor. Korisnik može imati ulogu autora, ali da nije još uvek prijavio, ni učestvovao u pisanju ni jednog rada. Rad može imati jednu ili više verzija, za koju se prati i njen id, link, datum pravljenja verzije.
 
 
 Recenzent može da objavljuje recenzije na verziju rada za koju se prati id, komentar i za tu objavu se čuvaju vreme i datum. Za verziju na rad ne mora da postoji ni jedna verzija, a može da postoji i više.
@@ -24,35 +24,37 @@ Radovi objavljeni u letnjem izdanju mogu da učestvuju na najviše jednoj konfer
 
 Radove u sali određenog datuma u određeno vreme može da izlaže neki od njegovih autora.
 
-U sali radove određenog datuma u određeno vreme _**Izlaže**_ onaj koji je taj rad i prijavio i to on ne mora izlagati ni u jednoj sali, a može i u više, a u sali ne mora niko da izlaže, ali ako izlaže onda je to samo jedan autor.
-
 
 ## Zadovoljivost uslova
 * Nezavisni entiteti
-  * Korisnik
+  * Korisnički nalog
   * Uloga
-  * Privilegije
+  * Privilegija
   * Šablon
   * Rad
   * Recenzija
   * Konferencija
   * Sala
+  * Časopis
+  * Izdanje časopisa
 * Agregirani entiteti
-  * Ima ulogu
+  * Ima
+  * Piše
   * Obezbeđuje
   * Prijavljuje
   * Ostavlja komentar
-  * Objavljuje
   * Učestvuje
   * Izlaže
   * Održava se
+  * Poslata poruka
 * Rekurzivni odnos
-  * Upravlja
-* Slab entitet ili odnos specijalizacija/generalizacija
-  * Generalizacija specijalizacija: Izdanje časopisa -> Letnje, Izdanje časopisa -> Zimsko
+  * Promena sopstvenih podataka
+* Slab entitet ili odnos specijalizacija/generalizacija:
   * Zavisni entitet: Verzija
 * Trigeri kojima se menja stanje baze
   * Triger1 - Prilikom prijave rada, koautori se automatski dodaju u spisak autora ako već ne postoje
-  * Triger2 - Na osnovu datuma izdanja čaopisa se automatski određuje da li je izdanje časopisa letnje ili zimsko
+  * Triger2 - Prilikom pravljenja nove verzije rada, link rada se postavlja na link verzije
   * Triger3 - Prilikom nove prijave istog rada se automatski pravi nova verzija
-  * Triger4 - Prilikom objave recenzije se automatski postavljaju datum i vreme na trenutan datum i vreme
+  * Triger4 - Prilikom pravljenja nove verzije rada se automatski postavljaju datum i vreme na trenutan datum i vreme
+  * Triger5 - Prilikom registrovanja/promene podataka, automatski se šalje obaveštenje korisnicima da je akcija uspešna
+
