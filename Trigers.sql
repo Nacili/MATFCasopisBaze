@@ -11,13 +11,13 @@ end |
 
 
 -- update
-create trigger Casopis_insert before insert on Casopis
+create trigger Casopis_update before update on Casopis
 for each row
 begin
 	-- samo administrator može da menja ove podatke
-    declare idKorisnika integer;
-    set idKorisnika = 'select idKorisnickiNalog from KorisnickiNalog';
-	if(idKorisnika != 1) then
+    declare idUloge integer;
+    set idUloge = (select IDUlogaKorisnickiNalog from Ima where IDKorisnickiNalogUloga = new.IDKorisnickiNalogCaspopis);
+	if(idUloge != 1) then
 		signal sqlstate '45000' set message_text = 'Samo administrator moze da vrsi promene na tabeli Casopis';
     end if;
 end |
@@ -35,8 +35,6 @@ end |
 
 -- IMA:
 
--- insert -> proveri da li ulogu dodeljuje Glavni urednik
-
 -- update -> ne sme da se radi update
 create trigger Ima_update before update on Ima
 for each row
@@ -44,62 +42,40 @@ begin
 	signal sqlstate '45000' set message_text = 'Greska: Ne moze se update-ovati ova tabela';
 end |
 
--- delete -> proveri da li ulogu uklanja Glavni urednik
-
--- END IMA:
--- ------------------------------------------------------------------------------------------------------------------------
-
--- IZDANJECASOPISA:
-
--- insert -> proveri da li unosi Glavni urednik
-
--- update -> proveri da li menja Glavni urednik
-
--- delete -> prvoeri da li briše Glavni urednik
-
--- END IZDANJECASOPISA:
--- ------------------------------------------------------------------------------------------------------------------------
-
-
--- IZLAZE:
-
--- insert -> ?
-
--- update -> ?
-
--- delete -> ?
-
--- END IZLAZE:
--- ------------------------------------------------------------------------------------------------------------------------
-
-
--- KONFERENCIJA:
-
--- insert -> ?
-
--- update -> ?
-
--- delete -> ?
-
--- END IKONFERENCIJA:
--- ------------------------------------------------------------------------------------------------------------------------
-
 -- KORISNICKINALOG:
 
 -- insert -> proveriti da li vec postoji korisnik sa tim email-om
-create trigger KorisnickiNalog_insert before insert on KorisnickiNalog
+create trigger KorisnickiNalog_insert_before before insert on KorisnickiNalog
 for each row
 begin
 	declare em varchar(45);
-    set em = "select email from KorisnickiNalog where email = new.email";
+    set em = (select email from KorisnickiNalog where email = new.email);
     if(em is not null) then
-		signal sqlstate '45000' set message_text = 'Greska: Ovaj korisnik je vec registrovan';
+		signal sqlstate '45000' set message_text = 'Greska: Korisnik sa ovom email adresom je vec registrovan';
+    --else
+    --    insert into Ima values (new.idKorisnickiNalog,now(),5);
     end if;
 end |
 
--- update -> ?
+create trigger KorisnickiNalog_insert_after after insert on KorisnickiNalog
+for each row
+begin
+        insert into Ima values (new.idKorisnickiNalog,now(),5);
+end |
 
--- delete -> ?
+-- update -> ?
+create trigger KorisnickiNalog_update before update on KorisnickiNalog
+for each row
+begin
+	declare em varchar(45);
+    set em = (select email from KorisnickiNalog where email = new.email and idKorisnickiNalog != old.idKorisnickiNalog);
+    if(em is not null) then
+		signal sqlstate '45000' set message_text = 'greska: Korisnik sa ovom email adresom je vec registrovan';
+    end if;
+    if(new.sifra is not null and new.sifra like '') then 
+        signal sqlstate '45000' set message_text = 'greska: Sifra mora sadrzati karaktere';
+    end if;
+end |
 
 -- END KORISNICKINALOG:
 -- ------------------------------------------------------------------------------------------------------------------------
@@ -107,56 +83,51 @@ end |
 -- OBEZBEDJUJE:
 
 -- insert -> ne mogu da se dodaju nove privilegije ulozi
+create trigger Casopis_insert before insert on Casopis
+for each row
+begin
+	signal sqlstate '45000' set message_text = 'Greska: Nove privilegije se ne mogu dodavati';
+end |
 
--- update -> nope
+-- update -> ne mogu da se menjati privilegije ulozi
+create trigger Casopis_update before update on Casopis
+for each row
+begin
+	signal sqlstate '45000' set message_text = 'Greska: Nove privilegije se ne mogu dodavati';
+end |
 
 -- delete -> ne mogu da se brisu dodeljene privilegije ulozi
-
+create trigger Casopis_update before update on Casopis
+for each row
+begin
+	signal sqlstate '45000' set message_text = 'Greska: Nove privilegije se ne mogu dodavati';
+end |
 -- END OBEZBEDJUJE:
 -- ------------------------------------------------------------------------------------------------------------------------
-
--- ODRZAVASE:
-
--- insert -> ?
-
--- update -> ?
-
--- delete -> ?
-
--- END ODRZAVASE:
--- ------------------------------------------------------------------------------------------------------------------------
-
 -- OSTAVLJAKOMENTAR:
 
 -- insert -> Glavni urednik/urednik
-
+create trigger OstavljaKomentar_insert before insert on OstavljaKomentar
+for each row
+begin
+    declare idUloge integer;
+    set idUloge = (select IDUlogaKorisnickiNalog from Ima where IDKorisnickiNalogUloga = new.KorisnickiNalog_idKorisnick);
+    if(idUloge != 2 and idUloge != 3) then
+	    signal sqlstate '45000' set message_text = 'Greska: Komentar mogu ostavljati samo urednik i glavni urednik';
+    end if;
+end |
 -- update -> Glavni urednik/urednik
-
--- delete -> Glavni urednik/urednik
+create trigger OstavljaKomentar_update before update on OstavljaKomentar
+for each row
+begin
+    declare idUloge integer;
+    set idUloge = (select IDUlogaKorisnickiNalog from Ima where IDKorisnickiNalogUloga = new.KorisnickiNalog_idKorisnick);
+    if(idUloge != 2 and idUloge != 3) then
+	    signal sqlstate '45000' set message_text = 'Greska: Komentar mogu ostavljati samo urednik i glavni urednik';
+    end if;
+end |
 
 -- END OSTAVLJAKOMENTAR:
--- ------------------------------------------------------------------------------------------------------------------------
-
--- PISE:
-
--- insert -> ?
-
--- update -> ?
-
--- delete -> ?
-
--- END PISE:
--- ------------------------------------------------------------------------------------------------------------------------
-
--- POSLATAPORUKA:
-
--- insert -> ?
-
--- update -> ?
-
--- delete -> ?
-
--- END POSLATAPORUKA:
 -- ------------------------------------------------------------------------------------------------------------------------
 
 -- PRIJAVLJUJE:
@@ -176,8 +147,6 @@ begin
 	signal sqlstate '45000' set message_text = 'Greska: Ne moze da se radi update nad tabelom Prijavljuje';
 end |
 
--- delete -> ?
-
 -- END PRIJAVLJUJE:
 -- ------------------------------------------------------------------------------------------------------------------------
 
@@ -196,8 +165,6 @@ for each row
 begin
 	set new.vremePromene = now();
 end |
-
--- delete -> ?
 
 -- END PROMENASOPSTVENIHPODATAKA:
 -- ------------------------------------------------------------------------------------------------------------------------
