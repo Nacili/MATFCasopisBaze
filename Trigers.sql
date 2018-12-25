@@ -16,7 +16,7 @@ for each row
 begin
 	-- samo administrator može da menja ove podatke
     declare idUloge integer;
-    set idUloge = (select IDUlogaKorisnickiNalog from Ima where IDKorisnickiNalogUloga = new.IDKorisnickiNalogCaspopis);
+    set idUloge = (select IDUlogaKorisnickiNalog from Ima where IDKorisnickiNalogUloga = new.IDKorisnickiNalogCasopis);
 	if(idUloge != 1) then
 		signal sqlstate '45000' set message_text = 'Samo administrator moze da vrsi promene na tabeli Casopis';
     end if;
@@ -52,7 +52,7 @@ begin
     set em = (select email from KorisnickiNalog where email = new.email);
     if(em is not null) then
 		signal sqlstate '45000' set message_text = 'Greska: Korisnik sa ovom email adresom je vec registrovan';
-    --else
+    -- else
     --    insert into Ima values (new.idKorisnickiNalog,now(),5);
     end if;
 end |
@@ -83,24 +83,24 @@ end |
 -- OBEZBEDJUJE:
 
 -- insert -> ne mogu da se dodaju nove privilegije ulozi
-create trigger Casopis_insert before insert on Casopis
+create trigger Obezbedjuje_insert before insert on Obezbedjuje
 for each row
 begin
 	signal sqlstate '45000' set message_text = 'Greska: Nove privilegije se ne mogu dodavati';
 end |
 
 -- update -> ne mogu da se menjati privilegije ulozi
-create trigger Casopis_update before update on Casopis
+create trigger Obezbedjuje_update before update on Obezbedjuje
 for each row
 begin
 	signal sqlstate '45000' set message_text = 'Greska: Nove privilegije se ne mogu dodavati';
 end |
 
 -- delete -> ne mogu da se brisu dodeljene privilegije ulozi
-create trigger Casopis_update before update on Casopis
+create trigger Obezbedjuje_delete before delete on Obezbedjuje
 for each row
 begin
-	signal sqlstate '45000' set message_text = 'Greska: Nove privilegije se ne mogu dodavati';
+	signal sqlstate '45000' set message_text = 'Greska: Privilegije se ne mogu oduzimati';
 end |
 -- END OBEZBEDJUJE:
 -- ------------------------------------------------------------------------------------------------------------------------
@@ -136,8 +136,8 @@ end |
 create trigger Prijavljuje_insert before insert on Prijavljuje
 for each row
 begin
-	set vremePrijave = now();
-    set status = 'prijavljen';
+    set new.vremePrijave = now();
+    update Rad set status = 'prijavljen' where new.IDRadKorisnik = idRada;
 end |
 
 -- update -> ne moze
@@ -156,7 +156,7 @@ end |
 create trigger PromenaSopstvenihPosataka_insert before insert on PromenaSopstvenihPodataka
 for each row
 begin
-	set vremePromene = now();
+	set new.vremePromene = now();
 end |
 
 -- update -> automatski postavlja vreme
