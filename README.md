@@ -52,9 +52,8 @@ Radove u sali određenog datuma u određeno vreme može da izlaže neki od njego
 * Slab entitet ili odnos specijalizacija/generalizacija:
   * Zavisni entitet: Verzija
 * Trigeri kojima se menja stanje baze
-  * Triger1 - Prilikom prijave rada, koautori se automatski dodaju u spisak autora ako već ne postoje
-  * Triger2 - Prilikom pravljenja nove verzije rada, link rada se postavlja na link verzije
-  * Triger3 - Prilikom nove prijave istog rada se automatski pravi nova verzija
-  * Triger4 - Prilikom pravljenja nove verzije rada se automatski postavljaju datum i vreme na trenutan datum i vreme
-  * Triger5 - Prilikom registrovanja/promene podataka, automatski se šalje obaveštenje korisnicima da je akcija uspešna
-
+  * Triger1 - Prilikom pravljenja nove verzije rada, link rada se postavlja na link verzije
+  * Triger2 - Prilikom nove prijave istog rada se automatski pravi nova verzija
+  * Triger3 - Prilikom pravljenja nove verzije rada se automatski postavljaju datum i vreme na trenutan datum i vreme
+  * Triger4 - Prilikom prijave rada se automatski pravi i njegova prva verzija
+  * Triger5 - Prilikom prijave novog korisnika automatski mu se dodeljuje i status autora

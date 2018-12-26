@@ -181,9 +181,9 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `matfCasopis`.`Verzija` (
   `idRada` INT NOT NULL AUTO_INCREMENT,
-  `pdfStorageLinkId` VARCHAR(45) NOT NULL,
+  `pdfStorageLinkId` VARCHAR(200) NOT NULL,
   `datum` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `brojVerzije` VARCHAR(45) NOT NULL,
+  `brojVerzije` INT NOT NULL,
   PRIMARY KEY (`idRada`, `brojVerzije`),
   CONSTRAINT `fk_Verzija_Rad1`
     FOREIGN KEY (`idRada`)
@@ -201,7 +201,7 @@ CREATE TABLE IF NOT EXISTS `matfCasopis`.`Recenzija` (
   `idKorisnik` INT NOT NULL,
   `komentarZaUrednika` TEXT NOT NULL,
   `Verzija_idRada` INT NOT NULL,
-  `Verzija_brojVerzije` VARCHAR(45) NOT NULL,
+  `Verzija_brojVerzije` INT NOT NULL,
   INDEX `fk_Recenzija_KorisnickiNalog1_idx` (`idKorisnik` ASC),
   PRIMARY KEY (`idKorisnik`, `Verzija_idRada`, `Verzija_brojVerzije`),
   INDEX `fk_Recenzija_Verzija1_idx` (`Verzija_idRada` ASC, `Verzija_brojVerzije` ASC),
@@ -269,14 +269,7 @@ CREATE TABLE IF NOT EXISTS `matfCasopis`.`Casopis` (
   `adresa` VARCHAR(90) NOT NULL,
   `issnMaska` VARCHAR(9) NOT NULL,
   `webStranica` VARCHAR(45) NULL,
-  `IDKorisnickiNalogCasopis` INT NOT NULL,
-  PRIMARY KEY (`idCasopis`),
-  INDEX `fk_Casopis_KorisnickiNalog1_idx` (`IDKorisnickiNalogCasopis` ASC),
-  CONSTRAINT `fk_Casopis_KorisnickiNalog1`
-    FOREIGN KEY (`IDKorisnickiNalogCasopis`)
-    REFERENCES `matfCasopis`.`KorisnickiNalog` (`idKorisnickiNalog`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+  PRIMARY KEY (`idCasopis`))
 ENGINE = InnoDB;
 
 

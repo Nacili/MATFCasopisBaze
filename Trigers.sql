@@ -52,8 +52,6 @@ begin
     set em = (select email from KorisnickiNalog where email = new.email);
     if(em is not null) then
 		signal sqlstate '45000' set message_text = 'Greska: Korisnik sa ovom email adresom je vec registrovan';
-    -- else
-    --    insert into Ima values (new.idKorisnickiNalog,now(),5);
     end if;
 end |
 
