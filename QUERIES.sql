@@ -5,8 +5,8 @@ insert into KorisnickiNalog(ime, prezime, email, sifra) values('Administrator', 
 insert into KorisnickiNalog(ime, prezime, email, sifra) values('Gurednik', 'Gurednik', 'gurednik@gurednik', 'gurednik');
 
 -- insert into CASOPIS
-insert into Casopis(idCasopis, ime, adresa, issnMaska, IDKorisnickiNalogCasopis)
-values (1, 'MATFCasopis', 'Studentski trg 16', 'mjau', 1);
+insert into Casopis(idCasopis, ime, adresa, issnMaska)
+values (1, 'MATFCasopis', 'Studentski trg 16', 'mjau');
 
 -- insert into ULOGA:
 insert into Uloga (naziv) values('Administrator');

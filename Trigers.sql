@@ -11,16 +11,16 @@ end |
 
 drop trigger if exists Casopis_update |
 -- update
-create trigger Casopis_update before update on Casopis
-for each row
-begin
+-- create trigger Casopis_update before update on Casopis
+-- for each row
+-- begin
 	-- samo administrator može da menja ove podatke
-    declare idUloge integer;
-    set idUloge = (select IDUlogaKorisnickiNalog from Ima where IDKorisnickiNalogUloga = new.IDKorisnickiNalogCasopis);
-	if(idUloge != 1) then
-		signal sqlstate '45000' set message_text = 'Samo administrator moze da vrsi promene na tabeli Casopis';
-    end if;
-end |
+--    declare idUloge integer;
+--    set idUloge = (select IDUlogaKorisnickiNalog from Ima where IDKorisnickiNalogUloga = new.IDKorisnickiNalogCasopis);
+-- 	if(idUloge != 1) then
+-- 		signal sqlstate '45000' set message_text = 'Samo administrator moze da vrsi promene na tabeli Casopis';
+--    end if;
+-- end |
 
 drop trigger if exists Casopis_delete |
 -- delete: podaci o casopisu moraju postojati, ne sme se brisati vec postojeci red
@@ -176,7 +176,7 @@ end |
 -- ------------------------------------------------------------------------------------------------------------------------
 -- RAD:
 drop trigger if exists Rad_insert |
-create trigger Rad_insert after insert on Rad 
+create trigger Rad_insert before insert on Rad 
 for each row
 begin
     insert into Verzija values(new.idRada,new.pdfStorageLinkId,now(),1);
@@ -196,7 +196,9 @@ drop trigger if exists Verzija_insert_a |
 create trigger Verzija_insert after insert on Verzija 
 for each row
 begin
-    update Rad set pdfStorageLinkId = new.pdfStorageLinkId where idRada = new.idRada;
+    if (new.brojVerzije <> 1) then
+    	update Rad set pdfStorageLinkId = new.pdfStorageLinkId where idRada = new.idRada;
+    end if;
 end |
 -- END VERZIJA:
 -- ------------------------------------------------------------------------------------------------------------------------
