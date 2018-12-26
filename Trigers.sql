@@ -174,4 +174,32 @@ end |
 
 -- END PROMENASOPSTVENIHPODATAKA:
 -- ------------------------------------------------------------------------------------------------------------------------
+-- RAD:
+drop trigger if exists Rad_insert |
+create trigger Rad_insert after insert on Rad 
+for each row
+begin
+    insert into Verzija values(new.idRada,new.pdfStorageLinkId,now(),1);
+end |
+-- END RAD
+-- ------------------------------------------------------------------------------------------------------------------------
+
+-- VERZIJA:
+drop trigger if exists Verzija_insert_b |
+create trigger Verzija_insert_b before insert on Verzija 
+for each row
+begin
+    set new.datum = now();
+end |
+
+drop trigger if exists Verzija_insert_a |
+create trigger Verzija_insert after insert on Verzija 
+for each row
+begin
+    update Rad set pdfStorageLinkId = new.pdfStorageLinkId where idRada = new.idRada;
+end |
+-- END VERZIJA:
+-- ------------------------------------------------------------------------------------------------------------------------
+
+
 
