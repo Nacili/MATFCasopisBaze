@@ -80,12 +80,56 @@ void prijavljivanje_rada(int idKorisnickiNalog){
 	fgets(naslov, line_size, stdin);
 	printf("Unesite link ka radu\n");
 	fgets(link, line_size, stdin);
-	
 	size_t length = strlen(naslov);
 	naslov[length-1] = '\0';
 	length = strlen(link);
 	link[length-1] = '\0';
 	
+	
+	// proveriti da li već postoji
+	// ako postoji, onda to znači da se prijavljuje nova verzija istog rada
+	sprintf(query,"select idRada from Rad where naslov = \'%s\'", naslov);
+	if(mysql_query(konekcija, query) != 0){
+		error_fatal("Greska u upitu %s\n", mysql_error (konekcija));
+	}
+	rezultat = mysql_use_result (konekcija);
+	red = mysql_fetch_row(rezultat);
+	if(red != NULL){
+		int id = atoi(red[0]);
+		mysql_free_result(rezultat);
+		// provera da li je to autor koji je odgovoran za rad: ne može se menjati tuđi rad
+		sprintf(query, "select * from Prijavljuje where IDRadKorisnik = %d", idKorisnickiNalog);
+		if(mysql_query(konekcija, query) != 0){
+			error_fatal("Greska u upitu %s\n", mysql_error (konekcija));
+		}
+		rezultat = mysql_use_result (konekcija);
+		red = mysql_fetch_row(rezultat);
+		if(red != NULL){
+			printf("Ne mozete menjati rad koji niste prijavili!\n");
+			mysql_free_result(rezultat);
+			return;
+		}
+		mysql_free_result(rezultat);
+		printf("Rad vec postoji i bice prijavljena njegova verzija!\n");
+		sprintf(query,"select brojVerzije from Verzija where idRada = %d", id);
+		if(mysql_query(konekcija, query) != 0){
+			error_fatal("Greska u upitu %s\n", mysql_error (konekcija));
+		}
+		rezultat = mysql_use_result (konekcija);
+		red = mysql_fetch_row(rezultat);
+		// mora da postoji prva verzija
+		int idVerzija = atoi(red[0]);
+		mysql_free_result(rezultat);
+		sprintf(query,"insert into Verzija(idRada, pdfStorageLinkId, brojVerzije) values(%d, \'%s\',  %d)", id, link, idVerzija+1);
+		if(mysql_query(konekcija, query) != 0){
+			error_fatal("Greska u upitu %s\n", mysql_error (konekcija));
+		}
+		return;
+	}
+	
+// 	mysql_free_result(rezultat);
+	
+	// rad ne postoji i dodaje se u bazu
 	sprintf (query, "insert into Rad(naslov, pdfStorageLinkId, status, objavljen) values(\"%s\", \"%s\", \"prijavljen\", false)", naslov, link);
 	
 	if(mysql_query(konekcija, query) != 0){
@@ -102,7 +146,7 @@ void prijavljivanje_rada(int idKorisnickiNalog){
 	
 	mysql_free_result(rezultat);
 	
-	printf("ID: %d\n", poslednji_rad);
+// 	printf("ID: %d\n", poslednji_rad);
 	
 	sprintf (query, "insert into Pise(IDRadKorisnickiNalog, IDKorisnickiNalogRad) values(%d, %d)", poslednji_rad, idKorisnickiNalog);
 	
@@ -275,15 +319,12 @@ void ostavljanje_recenzije_na_rad(int idKorisnickiNalog){
 	urednik[length-1] = '\0';
 	
 	printf("Unesite broj verzije rada na koju ostavljate recenziju:\n");
-	line_size = 10;
-	char br_verzije[10];
-	fgets(br_verzije, line_size, stdin);
-	length = strlen(br_verzije);
-	br_verzije[length-1] = '\0';
+	int br_verzije;
+	scanf("%d", &br_verzije);
 	
-	printf("%s\n%s\n%s\n%s\n", naslov, autor, urednik, br_verzije);
+// 	printf("%s\n%s\n%s\n%s\n", naslov, autor, urednik, br_verzije);
 	
-	sprintf(query, "insert into Recenzija(komentarZaAutora, komentarZaUrednika, idKorisnik, Verzija_idRada, Verzija_brojVerzije) values(\"%s\", \"%s\", \"%d\", \"%d\", \"%s\")", autor, urednik, idKorisnickiNalog, idRada, br_verzije);
+	sprintf(query, "insert into Recenzija(komentarZaAutora, komentarZaUrednika, idKorisnik, Verzija_idRada, Verzija_brojVerzije) values(\"%s\", \"%s\", \"%d\", %d, %d)", autor, urednik, idKorisnickiNalog, idRada, br_verzije);
 	
 	if(mysql_query(konekcija, query) != 0){
 			error_fatal("Greska u upitu %s\n", mysql_error (konekcija));
@@ -347,7 +388,7 @@ void izlistavanje_autora_rada(){
 
 void izlistavanje_radova_koji_ucestvuju_na_konferenciji(){
 	
-	sprintf(query, "select naslov from Rad where idRada = (select idRada from Ucestvuje where status = \'prihvacen\')");
+	sprintf(query, "select naslov from Rad where idRada in (select idRada from Ucestvuje where status = \'prihvacen\')");
 	if(mysql_query(konekcija, query) != 0){
 			error_fatal("Greska u upitu %s\n", mysql_error (konekcija));
 	}

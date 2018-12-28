@@ -3,6 +3,9 @@
 -- insert into KORISNICKINALOG:
 insert into KorisnickiNalog(ime, prezime, email, sifra) values('Administrator', 'Administrator', 'admin@admin', 'admin');
 insert into KorisnickiNalog(ime, prezime, email, sifra) values('Gurednik', 'Gurednik', 'gurednik@gurednik', 'gurednik');
+insert into KorisnickiNalog(ime, prezime, email, sifra) values('Urednik', 'Urednik', 'urednik@urednik', 'urednik');
+insert into KorisnickiNalog(ime, prezime, email, sifra) values('Recenzent', 'Recenzent', 'recenzent@recenzent', 'recenzent');
+insert into KorisnickiNalog(ime, prezime, email, sifra) values('Autor', 'Autor', 'autor@autor', 'autor');
 
 -- insert into CASOPIS
 insert into Casopis(idCasopis, ime, adresa, issnMaska)
@@ -18,11 +21,33 @@ insert into Uloga (naziv) values('Autor');
 -- insert into Ima 
 insert into Ima(IDKorisnickiNalogUloga,IDUlogaKorisnickiNalog,  vremeDobijanjaUloge)
 values(1, 1, now());
+
 insert into Ima(IDKorisnickiNalogUloga,IDUlogaKorisnickiNalog,  vremeDobijanjaUloge)
 values(2, 2, now());
+insert into Ima(IDKorisnickiNalogUloga,IDUlogaKorisnickiNalog,  vremeDobijanjaUloge)
+values(2, 3, now());
+insert into Ima(IDKorisnickiNalogUloga,IDUlogaKorisnickiNalog,  vremeDobijanjaUloge)
+values(2, 4, now());
+insert into Ima(IDKorisnickiNalogUloga,IDUlogaKorisnickiNalog,  vremeDobijanjaUloge)
+values(2, 5, now());
+
+insert into Ima(IDKorisnickiNalogUloga,IDUlogaKorisnickiNalog,  vremeDobijanjaUloge)
+values(3, 3, now());
+insert into Ima(IDKorisnickiNalogUloga,IDUlogaKorisnickiNalog,  vremeDobijanjaUloge)
+values(3, 4, now());
+insert into Ima(IDKorisnickiNalogUloga,IDUlogaKorisnickiNalog,  vremeDobijanjaUloge)
+values(3, 5, now());
+
+insert into Ima(IDKorisnickiNalogUloga,IDUlogaKorisnickiNalog,  vremeDobijanjaUloge)
+values(4, 4, now());
+insert into Ima(IDKorisnickiNalogUloga,IDUlogaKorisnickiNalog,  vremeDobijanjaUloge)
+values(4, 5, now());
+
+insert into Ima(IDKorisnickiNalogUloga,IDUlogaKorisnickiNalog,  vremeDobijanjaUloge)
+values(5, 5, now());
 
 -- insert into Privilegija:
-insert into Privilegija(naziv) values('pisanje rada');
+insert into Privilegija(naziv) values('promena sopstvenih podataka');
 insert into Privilegija(naziv) values('prijavljivanje rada');
 insert into Privilegija(naziv) values('menjanje podatataka casopisu');
 insert into Privilegija(naziv) values('menjanje podataka izdanju casopisa');
@@ -31,35 +56,41 @@ insert into Privilegija(naziv) values('ostavljanje komentara na rad');
 insert into Privilegija(naziv) values('ostavljanje recenzije na rad');
 insert into Privilegija(naziv) values('odobravanje rada');
 insert into Privilegija(naziv) values('odbijanje rada');
+insert into Privilegija(naziv) values('izlistavanje autora rada');
+insert into Privilegija(naziv) values('izlistavanje radova u izdanju casopisa');
+insert into Privilegija(naziv) values('izlistavanje zauzetih sala');
+insert into Privilegija(naziv) values('izlistavanje radova na konferenciji');
+insert into Privilegija(naziv) values('promena podataka ostalim korisnicima');
+insert into Privilegija(naziv) values('postavljanje upita direktno nad bazom');
 
 
 -- insert into Obezbedjuje
-insert into Obezbedjuje(idPrivilegija, IDUlogaPrivilegija) values (1, 5);
-insert into Obezbedjuje(idPrivilegija, IDUlogaPrivilegija) values (1, 4);
-insert into Obezbedjuje(idPrivilegija, IDUlogaPrivilegija) values (1, 3);
-insert into Obezbedjuje(idPrivilegija, IDUlogaPrivilegija) values (1, 2);
 
-insert into Obezbedjuje(idPrivilegija, IDUlogaPrivilegija) values (2, 5);
-insert into Obezbedjuje(idPrivilegija, IDUlogaPrivilegija) values (2, 4);
-insert into Obezbedjuje(idPrivilegija, IDUlogaPrivilegija) values (2, 3);
-insert into Obezbedjuje(idPrivilegija, IDUlogaPrivilegija) values (2, 2);
+-- administrator
+insert into Obezbedjuje(IDUlogaPrivilegija, idPrivilegija) values (1, 3);
+insert into Obezbedjuje(IDUlogaPrivilegija, idPrivilegija) values (1, 14);
+insert into Obezbedjuje(IDUlogaPrivilegija, idPrivilegija) values (1, 15);
 
-insert into Obezbedjuje(idPrivilegija, IDUlogaPrivilegija) values (3, 1);
+-- glavni urednik
+insert into Obezbedjuje(IDUlogaPrivilegija, idPrivilegija) values (2, 4);
+insert into Obezbedjuje(IDUlogaPrivilegija, idPrivilegija) values (2, 5);
 
-insert into Obezbedjuje(idPrivilegija, IDUlogaPrivilegija) values (4, 2);
+-- urednik
+insert into Obezbedjuje(IDUlogaPrivilegija, idPrivilegija) values (3, 6);
+insert into Obezbedjuje(IDUlogaPrivilegija, idPrivilegija) values (3, 8);
+insert into Obezbedjuje(IDUlogaPrivilegija, idPrivilegija) values (3, 9);
 
-insert into Obezbedjuje(idPrivilegija, IDUlogaPrivilegija) values (5, 2);
+-- recenzet
+insert into Obezbedjuje(IDUlogaPrivilegija, idPrivilegija) values (4, 7);
 
-insert into Obezbedjuje(idPrivilegija, IDUlogaPrivilegija) values (6, 2);
-insert into Obezbedjuje(idPrivilegija, IDUlogaPrivilegija) values (6, 3);
+-- autor
+insert into Obezbedjuje(IDUlogaPrivilegija, idPrivilegija) values (5, 1);
+insert into Obezbedjuje(IDUlogaPrivilegija, idPrivilegija) values (5, 2);
+insert into Obezbedjuje(IDUlogaPrivilegija, idPrivilegija) values (5, 10);
+insert into Obezbedjuje(IDUlogaPrivilegija, idPrivilegija) values (5, 11);
+insert into Obezbedjuje(IDUlogaPrivilegija, idPrivilegija) values (5, 12);
+insert into Obezbedjuje(IDUlogaPrivilegija, idPrivilegija) values (5, 13);
 
-insert into Obezbedjuje(idPrivilegija, IDUlogaPrivilegija) values (7, 4);
-
-insert into Obezbedjuje(idPrivilegija, IDUlogaPrivilegija) values (8, 2);
-insert into Obezbedjuje(idPrivilegija, IDUlogaPrivilegija) values (8, 3);
-
-insert into Obezbedjuje(idPrivilegija, IDUlogaPrivilegija) values (9, 2);
-insert into Obezbedjuje(idPrivilegija, IDUlogaPrivilegija) values (9, 3);
 
 -- insert into Sala
 insert into Sala(idSala, adresa, kapacitet) values (706, 'Studentski trg 16', 200);

@@ -176,7 +176,7 @@ end |
 -- ------------------------------------------------------------------------------------------------------------------------
 -- RAD:
 drop trigger if exists Rad_insert |
-create trigger Rad_insert before insert on Rad 
+create trigger Rad_insert after insert on Rad 
 for each row
 begin
     insert into Verzija values(new.idRada,new.pdfStorageLinkId,now(),1);
