@@ -137,13 +137,13 @@ end |
 
 -- PRIJAVLJUJE:
 drop trigger if exists Prijavljuje_insert |
--- insert -> automatski postavlja vreme i status rada
+-- update -> ne moze
 create trigger Prijavljuje_insert before insert on Prijavljuje
 for each row
 begin
-    set new.vremePrijave = now();
-    update Rad set status = 'prijavljen' where new.IDRadKorisnik = idRada;
+	set new.vremePrijave = now();
 end |
+
 
 drop trigger if exists Prijavljuje_update |
 -- update -> ne moze
@@ -175,10 +175,18 @@ end |
 -- END PROMENASOPSTVENIHPODATAKA:
 -- ------------------------------------------------------------------------------------------------------------------------
 -- RAD:
+drop trigger if exists Rad_insert_b |
+create trigger Rad_insert_b before insert on Rad
+for each row
+begin
+    set new.status = 'prijavljen';
+end |
+
 drop trigger if exists Rad_insert |
 create trigger Rad_insert after insert on Rad 
 for each row
 begin
+	-- update Rad set status = 'prijavljen';
     insert into Verzija values(new.idRada,new.pdfStorageLinkId,now(),1);
 end |
 -- END RAD
@@ -193,7 +201,7 @@ begin
 end |
 
 drop trigger if exists Verzija_insert_a |
-create trigger Verzija_insert after insert on Verzija 
+create trigger Verzija_insert_a after insert on Verzija 
 for each row
 begin
     if (new.brojVerzije <> 1) then

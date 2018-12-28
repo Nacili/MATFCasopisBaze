@@ -238,3 +238,9 @@ insert into OdrzavaSe values (1,830);
 insert into Izlaze values(1,706,'2018-8-18','16:00:00',1,3);
 insert into Izlaze values(1,830,'2018-8-18','16:00:00',2,8);
 insert into Izlaze values(1,706,'2018-8-18','17:00:00',3,10);
+
+-----------------------------------------------------------------------------------------------------
+
+insert into Ucestvuje(idRada, idKonferencija, datum, status) values(1, 1, '2018-8-18', 'prihvacen');
+insert into Ucestvuje(idRada, idKonferencija, datum, status) values(2, 2, '2018-8-18', 'prihvacen');
+insert into Ucestvuje(idRada, idKonferencija, datum, status) values(14, 1, '2018-8-18','odbijen');

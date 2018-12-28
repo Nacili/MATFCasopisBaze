@@ -104,7 +104,7 @@ void prijavljivanje_rada(int idKorisnickiNalog){
 		}
 		rezultat = mysql_use_result (konekcija);
 		red = mysql_fetch_row(rezultat);
-		if(red != NULL){
+		if(red == NULL){
 			printf("Ne mozete menjati rad koji niste prijavili!\n");
 			mysql_free_result(rezultat);
 			return;
@@ -130,10 +130,10 @@ void prijavljivanje_rada(int idKorisnickiNalog){
 // 	mysql_free_result(rezultat);
 	
 	// rad ne postoji i dodaje se u bazu
-	sprintf (query, "insert into Rad(naslov, pdfStorageLinkId, status, objavljen) values(\"%s\", \"%s\", \"prijavljen\", false)", naslov, link);
+	sprintf (query, "insert into Rad(naslov, pdfStorageLinkId,  status, objavljen) values(\"%s\", \"%s\",  \'\', false)", naslov, link);
 	
 	if(mysql_query(konekcija, query) != 0){
-			error_fatal("Gresk1a u upitu %s\n", mysql_error (konekcija));
+			error_fatal("Greska u upitu %s\n", mysql_error (konekcija));
 	}
 	
 	sprintf(query, "select last_insert_id()");
@@ -154,6 +154,11 @@ void prijavljivanje_rada(int idKorisnickiNalog){
 		error_fatal("Greska u upitu %s\n", mysql_error (konekcija));
 	}
 	
+	// ubacuje u Prijavljuje
+	sprintf (query, "insert into Prijavljuje(IDRadKorisnik, IDKorisnikRad) values(%d, %d)", poslednji_rad, idKorisnickiNalog);
+	if(mysql_query(konekcija, query) != 0){
+		error_fatal("Greska u upitu %s\n", mysql_error (konekcija));
+	}
 	
 	printf("Navedite ukupan broj autora rada ne racunajuci sebe\n");
 	int n;	// ukupan broj autora
