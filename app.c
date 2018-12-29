@@ -29,6 +29,48 @@ static void error_fatal (char *format, ...){
 	exit (EXIT_FAILURE);
 }
 
+void registracija(char *email){
+	printf("Unesite ime:\n");
+	char ime[45];
+	scanf("%s", ime);
+	printf("Unesite prezime:\n");
+	char prezime[45];
+	scanf("%s", prezime);
+// 	printf("Unesite email:\n");
+// 	char email[45];
+// 	scanf("%s", email);
+	printf("Unesite sifru:\n");
+	char sifra[45];
+	scanf("%s", sifra);
+	printf("Unesite adresa (opciono):\n");
+	char adresa[45];
+	scanf("%s", adresa);
+	if(adresa[0]=='/'){
+		adresa[0]='\0';
+	}
+	printf("Unesite postanski broj (opciono):\n");
+	char ptt[45];
+	scanf("%s", ptt);
+	if(ptt[0]=='/'){
+		ptt[0]='\0';
+	}
+	printf("Unesite telefon (opciono):\n");
+	char telefon[45];
+	scanf("%s", telefon);
+	if(telefon[0]=='/'){
+		telefon[0]='\0';
+	}
+	
+	sprintf(query, "insert into KorisnickiNalog(ime, prezime, email, sifra, adresa, ptt, telefon) values(\'%s\', \'%s\', \'%s\', \'%s\', \'%s\', \'%s\', \'%s\')", ime, prezime, email, sifra, adresa, ptt, telefon);
+	if(mysql_query(konekcija, query) != 0){
+		error_fatal("Greska u upitu %s\n", mysql_error (konekcija));
+	}
+	else{
+		printf("Uspesno ste registrovani i imate ulogu autora!\n");
+	}
+	
+}
+
 
 void promena_sopstvenih_podataka(int idKorisnickiNalog){
 	printf("Unesite redni broj podatka koji zelite da menjate:\n");
@@ -63,6 +105,11 @@ void promena_sopstvenih_podataka(int idKorisnickiNalog){
 		default: printf("Pogresan broj akcije!\n"); return; break;
 	}
 	
+	if(mysql_query(konekcija, query) != 0){
+		error_fatal("Greska u upitu %s\n", mysql_error (konekcija));
+	}
+	
+	sprintf(query, "insert into PromenaSopstvenihPodataka(idNalogaMenjac, idNalogaMenjan) values(%d, %d)", idKorisnickiNalog, idKorisnickiNalog);
 	if(mysql_query(konekcija, query) != 0){
 		error_fatal("Greska u upitu %s\n", mysql_error (konekcija));
 	}
@@ -266,10 +313,10 @@ void dodeljivanje_uloga_korisnicima(){
 	
 	// Ubacivanje u bazu
 	if(j == 1){
-		sprintf(query, "insert into Ima(IDKorisnickiNalogUloga,IDUlogaKorisnickiNalog,  vremeDobijanjaUloge) values(%d, 3, now())", i);
+		sprintf(query, "insert into Ima(IDKorisnickiNalogUloga,IDUlogaKorisnickiNalog) values(%d, 3)", i);
 	}
 	else if(j == 2){
-		sprintf(query, "insert into Ima(IDKorisnickiNalogUloga,IDUlogaKorisnickiNalog,  vremeDobijanjaUloge) values(%d, 4, now())", i);
+		sprintf(query, "insert into Ima(IDKorisnickiNalogUloga,IDUlogaKorisnickiNalog) values(%d, 4)", i);
 	}
 	else{
 		printf("Odabrali ste nepostojecu ulogu\n");
@@ -450,6 +497,12 @@ int main(int argc, char**argv){
 	if(red == NULL){
 		printf("Ne postoji takvo korisnicko ime ili lozinka\n");
 		mysql_free_result (rezultat);
+		printf("Da li zelite da se registrujete sa ovim emailom? [y/n]\n");
+		char c = getc(stdin);
+		c = getc(stdin);
+		if(c == 'y'){
+			registracija(email);
+		}
 		exit(EXIT_SUCCESS);
 	}
 	

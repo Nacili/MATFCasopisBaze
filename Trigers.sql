@@ -9,7 +9,7 @@ begin
 	signal sqlstate '45000' set message_text = 'Greska: Ne moze se dodavati novi red u tabelu Casopis';
 end |
 
-drop trigger if exists Casopis_update |
+-- drop trigger if exists Casopis_update |
 -- update
 -- create trigger Casopis_update before update on Casopis
 -- for each row
@@ -210,6 +210,3 @@ begin
 end |
 -- END VERZIJA:
 -- ------------------------------------------------------------------------------------------------------------------------
-
-
-
